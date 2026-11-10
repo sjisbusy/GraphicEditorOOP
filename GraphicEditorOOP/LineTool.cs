@@ -13,6 +13,10 @@ namespace GraphicEditorOOP
             Point currentPoint = e.GetPosition(relativeTo);
 
             Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
+
+            pen.StartLineCap = PenLineCap.Round;
+            pen.EndLineCap = PenLineCap.Round;
+
             tempContext.DrawLine(pen, startPoint, currentPoint);
         }
 
@@ -23,6 +27,10 @@ namespace GraphicEditorOOP
                 Point currentPoint = e.GetPosition(relativeTo);
 
                 Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
+
+                pen.StartLineCap = PenLineCap.Round;
+                pen.EndLineCap = PenLineCap.Round;
+
                 mainContext.DrawLine(pen, startPoint, currentPoint);
             }
             base.MouseUp(e, mainContext, relativeTo);

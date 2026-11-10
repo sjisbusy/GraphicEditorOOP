@@ -16,6 +16,10 @@ namespace GraphicEditorOOP
 
             Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
 
+            pen.StartLineCap = PenLineCap.Round;
+            pen.LineJoin = PenLineJoin.Round;
+            pen.EndLineCap = PenLineCap.Round;
+
             mainContext.DrawLine(pen, startPoint, currentPoint);
 
             startPoint = currentPoint;
