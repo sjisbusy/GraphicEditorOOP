@@ -44,7 +44,16 @@ namespace GraphicEditorOOP
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!e.LeftButton.Equals(MouseButtonState.Pressed)) return;
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                if (_currentVisual != null)
+                {
+                    using (DrawingContext tempContext = _canvas.OpenTemp()) { }
+                    _currentVisual = null;
+                }
+                _canvas.ReleaseMouseCapture();
+                return;
+            }
 
             if (_activeTool is PencilTool)
             {
@@ -66,6 +75,7 @@ namespace GraphicEditorOOP
                 }
             }
         }
+
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -121,7 +131,10 @@ namespace GraphicEditorOOP
             UpdateToolSettings();
             if (TxtWidthValue != null)
             {
+                int currentWidth = (int)SliderWidth.Value;
                 TxtWidthValue.Text = $"{(int)SliderWidth.Value} px";
+
+                TxtWidthValue.FontSize = 12 + (currentWidth * 0.5);
             }
         }
 
@@ -135,7 +148,7 @@ namespace GraphicEditorOOP
             SaveFileDialog saveDialog = new SaveFileDialog
             {
                 Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg",
-                Title = "Сохранить готовое изображение",
+                Title = "Сохранить изображение",
                 FileName = "Рисунок"
             };
 
@@ -157,7 +170,7 @@ namespace GraphicEditorOOP
                     encoder.Save(stream);
                 }
 
-                MessageBox.Show("Изображение успешно сохранено!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Рисунок успешно экспортирован.", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }
