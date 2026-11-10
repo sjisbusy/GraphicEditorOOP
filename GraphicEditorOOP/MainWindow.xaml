@@ -41,7 +41,7 @@
 
         <Border Grid.Column="1" Background="DarkGray" Padding="10">
             <Border x:Name="CanvasBorder" Background="White" CornerRadius="3" ClipToBounds="True">
-                <Grid x:Name="CanvasContainer"/>
+                <Grid x:Name="CanvasContainer" Background="White"/>
             </Border>
         </Border>
     </Grid>

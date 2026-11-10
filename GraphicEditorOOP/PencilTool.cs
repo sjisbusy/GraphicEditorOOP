@@ -6,33 +6,19 @@ namespace GraphicEditorOOP
 {
     public class PencilTool : Tool
     {
-        private PathGeometry? currentGeometry;
-        private PathFigure? currentFigure;
-
-        public override void MouseDown(MouseButtonEventArgs e, IInputElement relativeTo)
+        public override void MouseMove(MouseEventArgs e, DrawingContext mainContext, DrawingContext tempContext, IInputElement relativeTo)
         {
-            base.MouseDown(e, relativeTo);
-
-            if (isDrawing)
-            {
-                currentGeometry = new PathGeometry();
-                currentFigure = new PathFigure { StartPoint = startPoint };
-                currentGeometry.Figures.Add(currentFigure);
-            }
-        }
-
-        public override void MouseMove(MouseEventArgs e, DrawingContext drawingContext, IInputElement relativeTo)
-        {
-            if (!isDrawing || currentGeometry == null || currentFigure == null) return;
+            if (!isDrawing) return;
 
             Point currentPoint = e.GetPosition(relativeTo);
 
-            LineSegment segment = new LineSegment(currentPoint, true);
-            currentFigure.Segments.Add(segment);
+            if (startPoint == currentPoint) return;
 
             Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
 
-            drawingContext.DrawGeometry(null, pen, currentGeometry);
+            mainContext.DrawLine(pen, startPoint, currentPoint);
+
+            startPoint = currentPoint;
         }
     }
 }

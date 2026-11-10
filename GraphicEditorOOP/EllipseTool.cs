@@ -7,25 +7,36 @@ namespace GraphicEditorOOP
 {
     public class EllipseTool : Tool
     {
-        public override void MouseMove(MouseEventArgs e, DrawingContext drawingContext, IInputElement relativeTo)
+        private Rect GetRect(Point currentPoint)
         {
-            if (!isDrawing) return;
-
-            Point currentPoint = e.GetPosition(relativeTo);
             double x = Math.Min(startPoint.X, currentPoint.X);
             double y = Math.Min(startPoint.Y, currentPoint.Y);
             double width = Math.Abs(startPoint.X - currentPoint.X);
             double height = Math.Abs(startPoint.Y - currentPoint.Y);
 
-            if (width <= 0 || height <= 0) return;
+            return new Rect(x, y, width, height);
+        }
+
+        public override void MouseMove(MouseEventArgs e, DrawingContext mainContext, DrawingContext tempContext, IInputElement relativeTo)
+        {
+            if (!isDrawing) return;
+
+            Point currentPoint = e.GetPosition(relativeTo);
 
             Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
+            tempContext.DrawGeometry(null, pen, new EllipseGeometry(GetRect(currentPoint)));
+        }
 
-            Rect boundingBox = new Rect(x, y, width, height);
+        public override void MouseUp(MouseButtonEventArgs e, DrawingContext mainContext, IInputElement relativeTo)
+        {
+            if (isDrawing)
+            {
+                Point currentPoint = e.GetPosition(relativeTo);
 
-            EllipseGeometry ellipseGeometry = new EllipseGeometry(boundingBox);
-
-            drawingContext.DrawGeometry(null, pen, ellipseGeometry);
+                Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
+                mainContext.DrawGeometry(null, pen, new EllipseGeometry(GetRect(currentPoint)));
+            }
+            base.MouseUp(e, mainContext, relativeTo);
         }
     }
 }

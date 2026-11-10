@@ -7,25 +7,36 @@ namespace GraphicEditorOOP
 {
     public class RectangleTool : Tool
     {
-        public override void MouseMove(MouseEventArgs e, DrawingContext drawingContext, IInputElement relativeTo)
+        private Rect GetRect(Point currentPoint)
         {
-            if (!isDrawing) return;
-            Point currentPoint = e.GetPosition(relativeTo);
-
             double x = Math.Min(startPoint.X, currentPoint.X);
             double y = Math.Min(startPoint.Y, currentPoint.Y);
-
             double width = Math.Abs(startPoint.X - currentPoint.X);
             double height = Math.Abs(startPoint.Y - currentPoint.Y);
 
-            if (width <= 0 || height <= 0) return;
-
-            Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
-
-            Rect rect = new Rect(x, y, width, height);
-
-            drawingContext.DrawRectangle(null, pen, rect);
+            return new Rect(x, y, width, height);
         }
 
+        public override void MouseMove(MouseEventArgs e, DrawingContext mainContext, DrawingContext tempContext, IInputElement relativeTo)
+        {
+            if (!isDrawing) return;
+
+            Point currentPoint = e.GetPosition(relativeTo);
+
+            Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
+            tempContext.DrawRectangle(null, pen, GetRect(currentPoint));
+        }
+
+        public override void MouseUp(MouseButtonEventArgs e, DrawingContext mainContext, IInputElement relativeTo)
+        {
+            if (isDrawing)
+            {
+                Point currentPoint = e.GetPosition(relativeTo);
+
+                Pen pen = new Pen(new SolidColorBrush(CurrentColor), CurrentWidth);
+                mainContext.DrawRectangle(null, pen, GetRect(currentPoint));
+            }
+            base.MouseUp(e, mainContext, relativeTo);
+        }
     }
 }

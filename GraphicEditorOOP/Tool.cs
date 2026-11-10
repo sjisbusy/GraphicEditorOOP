@@ -20,9 +20,10 @@ namespace GraphicEditorOOP
             }
         }
 
-        public abstract void MouseMove(MouseEventArgs e, DrawingContext drawingContext, IInputElement relativeTo);
+        public abstract void MouseMove(MouseEventArgs e, DrawingContext mainContext, DrawingContext tempContext, IInputElement relativeTo);
 
-        public virtual void MouseUp(MouseButtonEventArgs e)
+
+        public virtual void MouseUp(MouseButtonEventArgs e, DrawingContext mainContext, IInputElement relativeTo)
         {
             if (e.LeftButton == MouseButtonState.Released)
             {

@@ -1,33 +1,60 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace GraphicEditorOOP
 {
     public class DrawingCanvas : FrameworkElement
     {
-        private readonly DrawingVisual _mainVisual = new DrawingVisual();
+        private readonly List<Visual> _visuals = new List<Visual>();
         private readonly DrawingVisual _tempVisual = new DrawingVisual();
 
         public DrawingCanvas()
         {
-            AddVisualChild(_mainVisual);
             AddVisualChild(_tempVisual);
         }
 
-        public DrawingContext OpenMain() => _mainVisual.RenderOpen();
+        public void AddVisual(Visual visual)
+        {
+            _visuals.Add(visual);
+            AddVisualChild(visual);
+            AddLogicalChild(visual);
+            InvalidateVisual();
+        }
+
         public DrawingContext OpenTemp() => _tempVisual.RenderOpen();
 
         public void Clear()
         {
-            using (var g = _mainVisual.RenderOpen()) { }
+            foreach (var visual in _visuals)
+            {
+                RemoveVisualChild(visual);
+                RemoveLogicalChild(visual);
+            }
+            _visuals.Clear();
+
             using (var g = _tempVisual.RenderOpen()) { }
+
+            InvalidateVisual();
         }
 
-        protected override int VisualChildrenCount => 2;
+        protected override int VisualChildrenCount => _visuals.Count + 1;
 
         protected override Visual GetVisualChild(int index)
         {
-            return index == 0 ? _mainVisual : _tempVisual;
+            if (index == _visuals.Count) return _tempVisual;
+            return _visuals[index];
         }
+
+        protected override Size ArrangeOverride(Size arrangeSize)
+        {
+            using (DrawingContext dc = OpenTemp())
+            {
+                dc.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
+            }
+            return base.ArrangeOverride(arrangeSize);
+        }
+
     }
 }
+
