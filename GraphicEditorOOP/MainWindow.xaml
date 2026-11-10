@@ -22,12 +22,26 @@
 
             <TextBlock Text="Цвет:" Margin="0,0,0,3"/>
             <ComboBox x:Name="ComboColor" Margin="0,0,0,10" SelectedIndex="0" SelectionChanged="ComboColor_SelectionChanged">
-                <ComboBoxItem Content="Черный" Tag="Black"/>
-                <ComboBoxItem Content="Красный" Tag="Red"/>
-                <ComboBoxItem Content="Синий" Tag="Blue"/>
-                <ComboBoxItem Content="Зеленый" Tag="Green"/>
-                <ComboBoxItem Content="Желтый" Tag="Yellow"/>
+
+                <ComboBoxItem Content="Черный" Tag="#000000"/>
+                <ComboBoxItem Content="Серый" Tag="#7F8C8D"/>
+
+                <ComboBoxItem Content="Бордовый" Tag="#800020"/>
+                <ComboBoxItem Content="Красный" Tag="#D32F2F"/>
+                <ComboBoxItem Content="Розовый" Tag="#FF85A2"/>
+                <ComboBoxItem Content="Оранжевый" Tag="#FF6F00"/>
+                <ComboBoxItem Content="Коричневый" Tag="#5C4033"/>
+                <ComboBoxItem Content="Желтый" Tag="#F1C40F"/>
+
+                <ComboBoxItem Content="Хвойный зеленый" Tag="#0A3613"/>
+                <ComboBoxItem Content="Зеленый" Tag="#228B22"/>
+                <ComboBoxItem Content="Светло-зеленый" Tag="#2ECC71"/>
+
+                <ComboBoxItem Content="Синий" Tag="#0D47A1"/>
+                <ComboBoxItem Content="Голубой" Tag="#3498DB"/>
+                <ComboBoxItem Content="Фиолетовый" Tag="#8E44AD"/>
             </ComboBox>
+
 
             <TextBlock Text="Толщина:" Margin="0,0,0,3"/>
             <Slider x:Name="SliderWidth" Minimum="1" Maximum="20" Value="2" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,0,0,5" ValueChanged="SliderWidth_ValueChanged"/>
